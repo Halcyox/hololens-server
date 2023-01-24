@@ -87,8 +87,8 @@ function unityServer(app,port) {
   };
 }
 
-unityServer(app, unity_port);
-bciServer(app, bci_port);
+//unityServer(app, unity_port);
+//bciServer(app, bci_port);
 
 const broadcast = unityServer(app, unity_port);
 bciServer(app, bci_port, broadcast);
