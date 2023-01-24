@@ -1,0 +1,176 @@
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}
+Error: listen EACCES: permission denied 0.0.0.0:80
+    at Server.setupListenHandle [as _listen2] (node:net:1451:21)
+    at listenInCluster (node:net:1516:12)
+    at doListen (node:net:1665:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'EACCES',
+  errno: -13,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 80
+}

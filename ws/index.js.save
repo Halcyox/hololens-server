@@ -1,0 +1,78 @@
+const { clear } = require('console');
+const crypto = require('crypto');
+const express = require('express');
+const { createServer } = require('http');
+const WebSocket = require('ws');
+
+const app = express();
+const port = 80; // 3000
+const host = "0.0.0.0"
+
+const server = createServer(app);
+const wss = new WebSocket.Server({ server });
+const connections = [];
+
+wss.on('connection', function(ws) {
+  console.log("client joined.");
+
+  // send "hello world" interval
+  //const textInterval = setInterval(() => ws.send("hello world!"), 100);
+  const startCmd = ws.send("START_COMMAND");
+  var response;
+  const alivePing = setInterval(() => ws.send("ping"), 5000);
+
+  // send random bytes interval
+  //const binaryInterval = setInterval(() => ws.send(crypto.randomBytes(8).buffer), 110);
+
+  var isBCI = true;
+
+  ws.on('message', function(message) {
+    const data = message.toString()
+    console.log(`Received message`, data)
+    if (data == "I am Unity") {
+      isBCI = false;
+      connections.push(ws);
+      return;
+    }
+    let obj = null
+    try{
+      obj = JSON.parse(data)
+    }catch(err){
+      console.log('Error parsing json', err, {data})
+    }
+
+    if (typeof(data) === "string" && isBCI) {
+      // client sent a string
+      //console.log("string received from client -> '" + data + "'");
+      console.log("string received from client -> " + data);
+
+      //const obj = JSON.parse(data);
+      
+      if(
+      console.log("BCI response -> " + obj.data.answer);
+
+      //response = ws.send(obj.data.answer);
+      connections.forEach(clients => {
+        response = clients.send(obj.data.answer);
+      });
+      // const component = obj.data.answer;
+      // response = JSON.stringify(component);
+      // console.log("Response string -> " + response);
+    } 
+    // else {
+    //   //console.log("binary received from client -> " + Array.from(data).join(", ") + "");
+    // }
+  });
+
+  ws.on('close', function() {
+    console.log("client left.");
+    //clearInterval(textInterval);
+    //clearInterval(binaryInterval);
+    clear(startCmd);
+    clearInterval(alivePing);
+  });
+});
+
+server.listen(port, host, function(e) {
+  console.log(`Listening on http://${host}:${port}`);
+});

@@ -1,0 +1,76 @@
+--- a/holoplay2_0/Assets/Server/index.js
++++ b/holoplay2_0/Assets/Server/index.js
+@@ -3,25 +3,34 @@ const crypto = require('crypto');
+ const express = require('express');
+ const { createServer } = require('http');
+ const WebSocket = require('ws');
++import { EventEmitter } from 'node:events';
++
+ 
+ const app = express();
+ const unity_port = 3001;
+ const bci_port = 3000;
+ 
+-function bciServer(app, port, broadcast_cb) {
++class Interchange extends EventEmitter {}
++
++const interchange = new Interchange();
++
++function bciServer(app, port) {
+   const server = createServer(app);
+   const wss = new WebSocket.Server({ server });
+   wss.on('connection', function (bci_conn) {
+     const alivePing = setInterval(() => bci_conn.send("ping"), 5000);
+     const startCmd = bci_conn.send("START_COMMAND");
++    function commandBci() {
++      bci_conn.send("commandBci");
++    }
++    interchange.on('commandBci', commandBci);
++    interchange.emit("foundBci");
+     bci_conn.on('message', function (data) {
+       if (typeof (data) === "string") {
+-//        console.log("raw JSON received from BCI -> " + data);
+-
+         const obj = JSON.parse(data);
+         console.debug(obj);
+         console.debug(`BCI response -> ${obj.data.answer}`);
+-        broadcast_cb(obj.data.answer);
++        interchange.emit('bciAnswer', obj.data.answer);
+       } else {
+         console.error("BCI sent non-string data.")
+       }
+@@ -51,19 +62,28 @@ function unityServer(app,port) {
+ 
+   wss.on('message', function (data) {
+     console.log("Unity sent data -> " + data);
++    interchange.emit('commandBci', data);
+   });
++
++  function foundBci() {
++    connections.forEach(client => client.send("foundBci"));
++  }
++  
++  function bciAnswer(data) {
++    connections.forEach(client => client.send(data));
++  };
++
++  interchange.on('foundBci', foundBci);
++  interchange.on('bciAnswer', (data) => connections.forEach(client => client.send(data)));
++
+   wss.on('close', function() {
+     console.info(`Unity client ${ws} lost.`)
+     console.debug(connections);
+     connections.splice(connections.indexOf(ws), 1);
+-  })
++  });
+   
+   server.listen(port);
+-
+-  return function broadcast(data) {
+-    connections.forEach(client => client.send(data));
+-  };
+ }
+ 
+-const broadcast = unityServer(app, unity_port);
+-bciServer(app, bci_port, broadcast);+unityServer(app, unity_port);
++bciServer(app, bci_port);
