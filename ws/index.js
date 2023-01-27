@@ -24,14 +24,15 @@ function bciServer(app, port) {
     }
     interchange.on('commandBci', commandBci)
     interchange.emit("foundBci");
-    bci_conn.on('message', function (data) {
-      if (typeof (data) === "string") {
-        const obj = JSON.parse(data);
-        console.log(`BCI response -> ${obj.data.answer}`);
-        interchange.emit('bciAnswer', obj.data.answer);
-      } else {
-        console.error("BCI sent non-string data.")
-      }
+    bci_conn.on('message', function (msgstr, binary) {
+	    	console.log(`is it binary? ${binary}; it's a ${msgstr}`);
+	const msg = binary  ? msgstr : msgstr.toString();
+	    const tagged_data = JSON.parse(msg);
+	console.log(`tagged_data is ${typeof(tagged_data)} and its value is ${tagged_data}`);
+	console.log(Object.getOwnPropertyNames(tagged_data));
+	console.log(`tagged_data is ${typeof(tagged_data.data)} and its value is ${tagged_data.data}`);
+        console.log(`BCI response -> ${tagged_data.data.answer}`);
+        interchange.emit('bciAnswer', tagged_data.data.answer);
     });
 
     bci_conn.on('close', function () {
@@ -44,7 +45,7 @@ function bciServer(app, port) {
   });
 
   server.listen(port);
-  console.log(port);
+  console.log(`Started bci listener on ${port}`);
 }
 
 function unityServer(app,port) {
@@ -91,4 +92,4 @@ function unityServer(app,port) {
 //bciServer(app, bci_port);
 
 const broadcast = unityServer(app, unity_port);
-bciServer(app, bci_port, broadcast);
+bciServer(app, bci_port);
