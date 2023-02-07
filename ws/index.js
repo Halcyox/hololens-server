@@ -19,8 +19,8 @@ function bciServer(app, port) {
   wss.on('connection', function (bci_conn) {
 	  console.log("BCI client joined.");
     const alivePing = setInterval(() => bci_conn.send("ping"), 5000);
-    const commandBci = () => {
-        bci_conn.send("commandBci");
+    const commandBci = (data) => {
+        bci_conn.send(data);
     }
     interchange.on('commandBci', commandBci)
     interchange.emit("foundBci");
@@ -63,7 +63,7 @@ function unityServer(app,port) {
     console.info(`Unity client ${ws} joined.`);
     connections.push(ws);
     ws.on('message', function (data, binary) {
-       data = isbinary ? data : data.toString();
+       data = binary ? data : data.toString();
        console.log("Unity sent data -> " + data);
        interchange.emit('commandBci', data);
     });
