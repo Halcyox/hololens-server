@@ -18,28 +18,22 @@ function bciServer(app, port) {
   const wss = new WebSocket.Server({ server });
   wss.on('connection', function (bci_conn) {
     const alivePing = setInterval(() => bci_conn.send("ping"), 5000);
-    const startCmd = bci_conn.send("START_COMMAND");
-    function commandBci() {
+    const commandBci = () => {
         bci_conn.send("commandBci");
     }
     interchange.on('commandBci', commandBci)
     interchange.emit("foundBci");
     bci_conn.on('message', function (msgstr, binary) {
-	    	console.log(`is it binary? ${binary}; it's a ${msgstr}`);
-	const msg = binary  ? msgstr : msgstr.toString();
-	    const tagged_data = JSON.parse(msg);
-	console.log(`tagged_data is ${typeof(tagged_data)} and its value is ${tagged_data}`);
-	console.log(Object.getOwnPropertyNames(tagged_data));
-	console.log(`tagged_data is ${typeof(tagged_data.data)} and its value is ${tagged_data.data}`);
-        console.log(`BCI response -> ${tagged_data.data.answer}`);
-        interchange.emit('bciAnswer', tagged_data.data.answer);
+      const msg = binary ? msgstr : msgstr.toString();
+      const tagged_data = JSON.parse(msg);
+      console.log(Object.getOwnPropertyNames(tagged_data));
+      console.log(`BCI response -> ${tagged_data.data.answer}`);
+      interchange.emit('bciAnswer', tagged_data.data.answer);
     });
 
     bci_conn.on('close', function () {
-      console.log("BCI disconnected.");
-      clear(startCmd);
-      clearInterval(alivePing);
-      interchange.removeListener(commandBci);
+      console.log("BCI disconnected, crashing so as to restart.");
+      process.exit(1);
     });
 
   });
