@@ -12,12 +12,14 @@ const bci_port = 3000;
 class Interchange extends EventEmitter {}
 
 const interchange = new Interchange();
+let anyBciFound = false;
 
 function bciServer(app, port) {
   const server = createServer(app);
   const wss = new WebSocket.Server({ server });
   wss.on('connection', function (bci_conn) {
     console.log("BCI client joined.");
+    anyBciFound = true;
     const alivePing = setInterval(() => bci_conn.send("ping"), 5000);
     const commandBci = (data) => {
         bci_conn.send(data);
@@ -34,7 +36,7 @@ function bciServer(app, port) {
 
     bci_conn.on('close', function () {
       console.log("BCI disconnected, crashing so as to restart.");
-      process.exit(1);
+      anyBciFound = false;
    });
 
   });
@@ -67,7 +69,12 @@ function unityServer(app,port) {
     ws.on('message', function (data, binary) {
        data = binary ? data : data.toString();
        console.log("Unity sent data -> " + data);
+    if (data == "START_COMMAND") {
        interchange.emit('commandBci', data);
+    } else if(data == "ARE_YOU_THERE_BCI") {
+       // If we get a message from the Unity scene that asks for if the BCI is available, we must respond yes/no
+       ws.send({type:"BciConnectedStatus", data: anyBciFound});
+    }
     });
   });
 
