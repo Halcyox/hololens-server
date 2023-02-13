@@ -14,6 +14,10 @@ const {
 const app = express();
 const unity_port = 3001;
 const bci_port = 3000;
+const intervalTime = 10000; // 10 seconds
+
+// boolean for debug mode
+const debugMode = true;
 
 class Interchange extends EventEmitter {}
 
@@ -94,7 +98,9 @@ function unityServer(app, port) {
             console.log("Unity sent data -> " + data);
             if (data == "START_COMMAND") {
                 interchange.emit('commandBci', data);
-                setInterval(sendRandBciOutput,2000); // call sendRandBciOutput() every 2 seconds using setInterval()
+                if (debugMode) { //if debug mode is on, send random bci output every intervalTime seconds
+                    setInterval(sendRandBciOutput, intervalTime); // call sendRandBciOutput() every intervalTime seconds using setInterval()
+                }
                 console.log("emitted commandBci");
             } else if (data == "ARE_YOU_THERE_BCI") {
                 // If we get a message from the Unity scene that asks for if the BCI is available, we must respond yes/no
