@@ -1,34 +1,22 @@
-const {
-    clear
-} = require('console');
-const crypto = require('crypto');
-const express = require('express');
-const {
-    createServer
-} = require('http');
-const WebSocket = require('ws');
-const {
-    EventEmitter
-} = require('events');
+const { clear } = require('console'), // Import clear method from the console module
+      crypto = require('crypto'), // Import the crypto module for generating cryptographic values
+      express = require('express'), // Import the Express.js framework
+      { createServer } = require('http'), // Import the createServer method from the http module
+      WebSocket = require('ws'), // Import the WebSocket module
+      { EventEmitter } = require('events'), // Import the EventEmitter class from the events module
+      app = express(), // Create a new Express.js app
+      unity_port = 3001, // Port for Unity connection
+      bci_port = 3000, // Port for BCI connection
+      intervalTime = 10000, // Interval time for BCI server
+      debugMode = true, // Boolean for debug mode
+      interchange = new EventEmitter(), // Create a new EventEmitter instance for inter-component communication
+      sendRandBciOutput = () => interchange.emit('bciAnswer', JSON.stringify(Math.random() < 0.5 ? 'yes' : 'no')), // Define a function that emits a 'bciAnswer' event with a random 'yes' or 'no' string
+      anyBciFound = false; // Boolean for BCI device status
 
-const app = express();
-const unity_port = 3001;
-const bci_port = 3000;
-const intervalTime = 10000; // 10 seconds
+class Interchange extends EventEmitter {} // Define a new class that extends EventEmitter to use as the inter-component communication channel
 
-// boolean for debug mode
-const debugMode = true;
+console.clear(); // Clear the console when the script runs
 
-class Interchange extends EventEmitter {}
-
-const interchange = new Interchange();
-let anyBciFound = false;
-
-function sendRandBciOutput() {
-	    let randString = Math.random() < 0.5 ? 'yes' : 'no'; // randomly generates 'yes', 'no'
-        randString = JSON.stringify(randString); // convert to JSON string
-	    interchange.emit('bciAnswer', randString); // emit 'bciAnswer' event with randString as argument	
-}
 
 function bciServer(app, port) {
     const server = createServer(app);
