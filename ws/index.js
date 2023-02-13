@@ -50,7 +50,9 @@ function bciServer(app, port) {
         //interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
 
         //});
-	    setInterval(sendRandBciOutput,2000); // call sendRandBciOutput() every 20 seconds using setInterval()
+        bci_conn.on('message', function(msgstr, binary) {
+	        setInterval(sendRandBciOutput,2000); // call sendRandBciOutput() every 20 seconds using setInterval()
+        });
 
         bci_conn.on('close', function() {
             console.log("BCI disconnected, crashing so as to restart.");
