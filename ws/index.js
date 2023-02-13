@@ -20,6 +20,12 @@ class Interchange extends EventEmitter {}
 const interchange = new Interchange();
 let anyBciFound = false;
 
+function sendRandBciOutput() {
+	    const randString = Math.random() < 0.5 ? 'yes' : 'no'; // randomly generates 'yes', 'no'
+        randString = JSON.stringify(randString); // convert to JSON string
+	    interchange.emit('bciAnswer', randString); // emit 'bciAnswer' event with randString as argument	
+}
+
 function bciServer(app, port) {
     const server = createServer(app);
     const wss = new WebSocket.Server({
@@ -40,17 +46,11 @@ function bciServer(app, port) {
         //    console.log(Object.getOwnPropertyNames(tagged_data));
         //    console.log(`BCI response -> ${tagged_data.data.answer}`);
             
-	//    interchange.emit('bciAnswer', "yes");
-            //interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
+	    //interchange.emit('bciAnswer', "yes");
+        //interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
 
         //});
-        
-	 
-        function sendRandBciOutput() {
-	 const randString = Math.random() < 0.5 ? 'yes' : 'no'; // randomly generates 'yes', 'no'
-	 interchange.emit('bciAnswer', randString); // emit 'bciAnswer' event with randString as argument	
-	}
-	setInterval(sendRandBciOutput,20000); // call sendRandBciOutput() every 20 seconds using setInterval()
+	    setInterval(sendRandBciOutput,2000); // call sendRandBciOutput() every 20 seconds using setInterval()
 
         bci_conn.on('close', function() {
             console.log("BCI disconnected, crashing so as to restart.");
