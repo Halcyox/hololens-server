@@ -17,7 +17,7 @@ class Interchange extends EventEmitter {} // Define a new class that extends Eve
 console.clear(); // Clear the console when the script runs
 
 // Define a function that emits a 'bciAnswer' event with a random 'yes' or 'no' string
-funnction sendRandBciOutput() {
+function sendRandBciOutput() {
     interchange.emit('bciAnswer', JSON.stringify(Math.random() < 0.5 ? 'yes' : 'no'))
 }
 
