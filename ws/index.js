@@ -10,13 +10,20 @@ const { clear } = require('console'), // Import clear method from the console mo
       intervalTime = 10000, // Interval time for BCI server
       debugMode = true, // Boolean for debug mode
       interchange = new EventEmitter(), // Create a new EventEmitter instance for inter-component communication
-      sendRandBciOutput = () => interchange.emit('bciAnswer', JSON.stringify(Math.random() < 0.5 ? 'yes' : 'no')), // Define a function that emits a 'bciAnswer' event with a random 'yes' or 'no' string
       anyBciFound = false; // Boolean for BCI device status
 
 class Interchange extends EventEmitter {} // Define a new class that extends EventEmitter to use as the inter-component communication channel
 
 console.clear(); // Clear the console when the script runs
 
+// Define a function that emits a 'bciAnswer' event with a random 'yes' or 'no' string
+funnction sendRandBciOutput() {
+    interchange.emit('bciAnswer', JSON.stringify(Math.random() < 0.5 ? 'yes' : 'no'))
+}
+
+if (debugMode) { //if debug mode is on, send random bci output every intervalTime seconds
+    setInterval(sendRandBciOutput, intervalTime); // call sendRandBciOutput() every intervalTime seconds using setInterval()
+}
 
 function bciServer(app, port) {
     const server = createServer(app);
@@ -30,27 +37,22 @@ function bciServer(app, port) {
         const commandBci = (data) => {
             bci_conn.send(data);
         }
-        interchange.on('commandBci', commandBci)
+        interchange.on('commandBci', commandBci);
         interchange.emit("foundBci");
-        //bci_conn.on('message', function(msgstr, binary) {
-        //    const msg = binary ? msgstr : msgstr.toString();
-        //    const tagged_data = JSON.parse(msg);
-        //    console.log(Object.getOwnPropertyNames(tagged_data));
-        //    console.log(`BCI response -> ${tagged_data.data.answer}`);
-            
-	    //interchange.emit('bciAnswer', "yes");
-        //interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
-
-        //});
         bci_conn.on('message', function(msgstr, binary) {
-	        setInterval(sendRandBciOutput,2000); // call sendRandBciOutput() every 2 seconds using setInterval()
+           const msg = binary ? msgstr : msgstr.toString();
+           const tagged_data = JSON.parse(msg);
+           console.log(`BCI response -> ${tagged_data.data.answer}`);
+            if (!debugMode) {
+                interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
+            } else {
+                console.log("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
+            }
         });
-
         bci_conn.on('close', function() {
             console.log("BCI disconnected, crashing so as to restart.");
             anyBciFound = false;
         });
-
     });
 
     server.listen(port);
@@ -65,8 +67,8 @@ function unityServer(app, port) {
     const connections = [];
 
     function foundBci() {
+        console.info("foundBci event occured");
         connections.forEach(client => {
-            console.info("bruh");
             client.send("foundBci");
         });
     }
@@ -86,29 +88,22 @@ function unityServer(app, port) {
             console.log("Unity sent data -> " + data);
             if (data == "START_COMMAND") {
                 interchange.emit('commandBci', data);
-                if (debugMode) { //if debug mode is on, send random bci output every intervalTime seconds
-                    setInterval(sendRandBciOutput, intervalTime); // call sendRandBciOutput() every intervalTime seconds using setInterval()
-                }
-                console.log("emitted commandBci");
+                console.log(`emitted commandBci(${data})`);
             } else if (data == "ARE_YOU_THERE_BCI") {
-                // If we get a message from the Unity scene that asks for if the BCI is available, we must respond yes/no
+                // If we get a message from the Unity scene that asks for if the BCI is available, we must respond true/false
                 ws.send(JSON.stringify({
                     type: "BciConnectedStatus",
                     data: anyBciFound
                 }));
-                interchange.emit('anyBciFound', {
-                    type: "BciConnectedStatus",
-                    data: anyBciFound
-                });
             }
         });
     });
 
     wss.on('close', function() {
-        console.info(`Unity client ${ws} lost.`)
-        console.debug(connections);
+        console.info(`Unity client ${ws} lost.`);
+        console.debug(`Remaining connections: ${connections}`);
         connections.splice(connections.indexOf(ws), 1);
-    })
+    });
 
     server.listen(port);
     console.log(port);
