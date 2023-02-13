@@ -17,7 +17,7 @@ function bciServer(app, port) {
   const server = createServer(app);
   const wss = new WebSocket.Server({ server });
   wss.on('connection', function (bci_conn) {
-	  console.log("BCI client joined.");
+    console.log("BCI client joined.");
     const alivePing = setInterval(() => bci_conn.send("ping"), 5000);
     const commandBci = (data) => {
         bci_conn.send(data);
@@ -35,7 +35,7 @@ function bciServer(app, port) {
     bci_conn.on('close', function () {
       console.log("BCI disconnected, crashing so as to restart.");
       process.exit(1);
-    });
+   });
 
   });
 
@@ -49,7 +49,9 @@ function unityServer(app,port) {
   const connections = [];
 
   function foundBci() {
-    connections.forEach(client => client.send("foundBci"));
+    connections.forEach(client => {
+	    console.info("bruh"); client.send("foundBci");
+    });
   }
 
   function bciAnswer(data) {
