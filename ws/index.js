@@ -7,7 +7,7 @@ const { clear } = require('console'), // Import clear method from the console mo
       app = express(), // Create a new Express.js app
       unity_port = 3001, // Port for Unity connection
       bci_port = 3000, // Port for BCI connection
-      intervalTime = 10000, // Interval time for BCI server
+      intervalTime = 30000, // Interval time for BCI server
       debugMode = true, // Boolean for debug mode
       interchange = new EventEmitter(), // Create a new EventEmitter instance for inter-component communication
       anyBciFound = false; // Boolean for BCI device status
@@ -22,7 +22,7 @@ function sendRandBciOutput() {
 }
 
 if (debugMode) { //if debug mode is on, send random bci output every intervalTime seconds
-    setInterval(sendRandBciOutput, intervalTime); // call sendRandBciOutput() every intervalTime seconds using setInterval()
+    //setInterval(sendRandBciOutput, intervalTime); // call sendRandBciOutput() every intervalTime seconds using setInterval()
 }
 
 function bciServer(app, port) {
@@ -88,8 +88,12 @@ function unityServer(app, port) {
             console.log("Unity sent data -> " + data);
             if (data == "START_COMMAND") {
                 interchange.emit('commandBci', data);
+		if (debugMode)  {
+			setTimeout(sendRandBciOutput, 15000);
+		}
                 console.log(`emitted commandBci(${data})`);
             } else if (data == "ARE_YOU_THERE_BCI") {
+		console.log("was asked: ARE_YOU_THERE_BCI");
                 // If we get a message from the Unity scene that asks for if the BCI is available, we must respond true/false
                 ws.send(JSON.stringify({
                     type: "BciConnectedStatus",
