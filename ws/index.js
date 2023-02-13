@@ -70,7 +70,7 @@ function unityServer(app,port) {
        data = binary ? data : data.toString();
        console.log("Unity sent data -> " + data);
     if (data == "START_COMMAND") {
-       interchange.emit('commandBci', data);
+       interchange.emit('commandBci', JSON.stringify(data));
     } else if(data == "ARE_YOU_THERE_BCI") {
        // If we get a message from the Unity scene that asks for if the BCI is available, we must respond yes/no
        ws.send({type:"BciConnectedStatus", data: anyBciFound});
