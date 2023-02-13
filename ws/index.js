@@ -34,13 +34,23 @@ function bciServer(app, port) {
         }
         interchange.on('commandBci', commandBci)
         interchange.emit("foundBci");
-        bci_conn.on('message', function(msgstr, binary) {
-            const msg = binary ? msgstr : msgstr.toString();
-            const tagged_data = JSON.parse(msg);
-            console.log(Object.getOwnPropertyNames(tagged_data));
-            console.log(`BCI response -> ${tagged_data.data.answer}`);
-            interchange.emit('bciAnswer', tagged_data.data.answer);
-        });
+        //bci_conn.on('message', function(msgstr, binary) {
+        //    const msg = binary ? msgstr : msgstr.toString();
+        //    const tagged_data = JSON.parse(msg);
+        //    console.log(Object.getOwnPropertyNames(tagged_data));
+        //    console.log(`BCI response -> ${tagged_data.data.answer}`);
+            
+	//    interchange.emit('bciAnswer', "yes");
+            //interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
+
+        //});
+        
+	 
+        function sendRandBciOutput() {
+	 const randString = Math.random() < 0.5 ? 'yes' : 'no'; // randomly generates 'yes', 'no'
+	 interchange.emit('bciAnswer', randString); // emit 'bciAnswer' event with randString as argument	
+	}
+	setInterval(sendRandBciOutput,20000); // call sendRandBciOutput() every 20 seconds using setInterval()
 
         bci_conn.on('close', function() {
             console.log("BCI disconnected, crashing so as to restart.");
@@ -81,7 +91,7 @@ function unityServer(app, port) {
             data = binary ? data : data.toString();
             console.log("Unity sent data -> " + data);
             if (data == "START_COMMAND") {
-                interchange.emit('commandBci', JSON.stringify(data));
+                interchange.emit('commandBci', data);
                 console.log("emitted commandBci");
             } else if (data == "ARE_YOU_THERE_BCI") {
                 // If we get a message from the Unity scene that asks for if the BCI is available, we must respond yes/no
