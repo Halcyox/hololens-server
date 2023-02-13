@@ -21,7 +21,7 @@ const interchange = new Interchange();
 let anyBciFound = false;
 
 function sendRandBciOutput() {
-	    const randString = Math.random() < 0.5 ? 'yes' : 'no'; // randomly generates 'yes', 'no'
+	    let randString = Math.random() < 0.5 ? 'yes' : 'no'; // randomly generates 'yes', 'no'
         randString = JSON.stringify(randString); // convert to JSON string
 	    interchange.emit('bciAnswer', randString); // emit 'bciAnswer' event with randString as argument	
 }
