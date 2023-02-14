@@ -9,8 +9,8 @@ const { clear } = require('console'), // Import clear method from the console mo
       bci_port = 3000, // Port for BCI connection
       intervalTime = 30000, // Interval time for BCI server
       debugMode = false, // Boolean for debug mode
-      interchange = new EventEmitter(), // Create a new EventEmitter instance for inter-component communication
-      anyBciFound = false; // Boolean for BCI device status
+      interchange = new EventEmitter(); // Create a new EventEmitter instance for inter-component communication
+let      anyBciFound = false; // Boolean for BCI device status
 
 class Interchange extends EventEmitter {} // Define a new class that extends EventEmitter to use as the inter-component communication channel
 
