@@ -97,7 +97,8 @@ function unityServer(app, port) {
                 // If we get a message from the Unity scene that asks for if the BCI is available, we must respond true/false
                 ws.send(JSON.stringify({
                     type: "BciConnectedStatus",
-                    data: anyBciFound
+                    //data: anyBciFound
+                    data: true
                 }));
             }
         });
