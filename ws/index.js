@@ -41,22 +41,25 @@ function bciServer(app, port) {
         interchange.emit("foundBci");
         bci_conn.on('message', function(msgstr, binary) {
            const msg = binary ? msgstr : msgstr.toString();
+           console.debug(`Raw data string: ${msg}`);
            const tagged_data = JSON.parse(msg);
-           console.log(`BCI response -> ${tagged_data.data.answer}`);
+           console.debug(tagged_data)
+
+           console.info(`BCI response -> ${tagged_data.data.answer}`);
             if (!debugMode) {
                 interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
             } else {
-                console.log("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
+                console.warn("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
             }
         });
         bci_conn.on('close', function() {
-            console.log("BCI disconnected, crashing so as to restart.");
+            console.error("BCI disconnected, not gonna crash, gonna reset anyBciFound to false.");
             anyBciFound = false;
         });
     });
 
     server.listen(port);
-    console.log(`Started bci listener on ${port}`);
+    console.info(`Started bci listener on TCP:${port}`);
 }
 
 function unityServer(app, port) {
@@ -85,15 +88,15 @@ function unityServer(app, port) {
         connections.push(ws);
         ws.on('message', function(data, binary) {
             data = binary ? data : data.toString();
-            console.log("Unity sent data -> " + data);
+            console.debug("Unity sent data -> " + data);
             if (data == "START_COMMAND") {
                 interchange.emit('commandBci', data);
-		if (debugMode)  {
-			setTimeout(sendRandBciOutput, 15000);
-		}
+	        	if (debugMode)  {
+		        	setTimeout(sendRandBciOutput, 15000);
+        		}
                 console.log(`emitted commandBci(${data})`);
             } else if (data == "ARE_YOU_THERE_BCI") {
-		console.log("was asked: ARE_YOU_THERE_BCI");
+	        	console.debug("was asked: ARE_YOU_THERE_BCI");
                 // If we get a message from the Unity scene that asks for if the BCI is available, we must respond true/false
                 ws.send(JSON.stringify({
                     type: "BciConnectedStatus",
@@ -111,7 +114,7 @@ function unityServer(app, port) {
     });
 
     server.listen(port);
-    console.log(port);
+    console.info(`Unity server function is now listening on TCP:${port}`);
 
     return function broadcast(data) {
         connections.forEach(client => client.send(data));
