@@ -16,13 +16,11 @@ class Interchange extends EventEmitter {} // Define a new class that extends Eve
 
 console.clear(); // Clear the console when the script runs
 
-// Define a function that emits a 'bciAnswer' event with a random 'yes' or 'no' string
-function sendRandBciOutput() {
-    interchange.emit('bciAnswer', JSON.stringify(Math.random() < 0.5 ? 'yes' : 'no'))
-}
-
-if (debugMode) { //if debug mode is on, send random bci output every intervalTime seconds
-    //setInterval(sendRandBciOutput, intervalTime); // call sendRandBciOutput() every intervalTime seconds using setInterval()
+const states = ['no','no','yes'];
+let stidx = 0;
+function sendDbgBciOutput() {
+    interchange.emit('bciAnswer', JSON.stringify(states[stidx]));
+	stidx = (stidx+1)%states.length; // <~ cyclic permutation
 }
 
 function bciServer(app, port) {
