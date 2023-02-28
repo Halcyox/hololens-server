@@ -8,7 +8,7 @@ const { clear } = require('console'), // Import clear method from the console mo
       unity_port = 3001, // Port for Unity connection
       bci_port = 3000, // Port for BCI connection
       intervalTime = 30000, // Interval time for BCI server
-      debugMode = false, // Boolean for debug mode
+      debugMode = true, // Boolean for debug mode
       interchange = new EventEmitter(); // Create a new EventEmitter instance for inter-component communication
 let      anyBciFound = false; // Boolean for BCI device status
 
@@ -47,7 +47,8 @@ function bciServer(app, port) {
             if (!debugMode) {
                 interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
             } else {
-                console.warn("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
+                sendDbgBciOutput();
+                // console.warn("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
             }
         });
         bci_conn.on('close', function() {
