@@ -33,9 +33,9 @@ console.clear(); // Clear the console when the script runs
 const states = ['no','no','yes'];
 let stidx = 0;
 function sendDbgBciOutput() {
-    // interchange.emit('bciAnswer', JSON.stringify(states[stidx]));
+    interchange.emit('bciAnswer', JSON.stringify(states[stidx]));
     // Emitting the json snippet with bciAnswer event
-    interchange.emit('bciAnswer', JSON.stringify(json_snippet));
+    // interchange.emit('bciAnswer', JSON.stringify(json_snippet));
 	stidx = (stidx+1)%states.length; // <~ cyclic permutation
 }
 
