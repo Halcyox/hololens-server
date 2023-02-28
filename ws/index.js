@@ -86,7 +86,7 @@ function unityServer(app, port) {
     function foundBci() {
         console.info("foundBci event occured");
         connections.forEach(client => {
-            client.send("foundBci");
+            client.send(JSON.stringify("foundBci"));
         });
     }
 
