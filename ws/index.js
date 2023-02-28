@@ -47,7 +47,6 @@ function bciServer(app, port) {
             if (!debugMode) {
                 interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
             } else {
-                //sendDbgBciOutput();
                 console.warn("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
             }
         });
@@ -91,7 +90,8 @@ function unityServer(app, port) {
             if (data == "START_COMMAND") {
                 interchange.emit('commandBci', data);
 	        	if (debugMode)  {
-		        	setTimeout(sendRandBciOutput, 15000);
+		        	//setTimeout(sendRandBciOutput, 15000);
+                    sendDbgBciOutput(); //we will send a debug output
         		}
                 console.log(`emitted commandBci(${data})`);
             } else if (data == "ARE_YOU_THERE_BCI") {
