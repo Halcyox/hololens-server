@@ -14,12 +14,28 @@ let      anyBciFound = false; // Boolean for BCI device status
 
 class Interchange extends EventEmitter {} // Define a new class that extends EventEmitter to use as the inter-component communication channel
 
+const json_snippet = {
+    error: false,
+    message: 'Received results for 5DTA-YXGE-WKFP-FG19',
+    data: {
+      answer: 'no',
+      stream: {
+        id: '5DTA-YXGE-WKFP-FG19',
+        option: 'no',
+        per_second: [Array],
+        total_seconds: 15
+      }
+    }
+};
+
 console.clear(); // Clear the console when the script runs
 
 const states = ['no','no','yes'];
 let stidx = 0;
 function sendDbgBciOutput() {
-    interchange.emit('bciAnswer', JSON.stringify(states[stidx]));
+    // interchange.emit('bciAnswer', JSON.stringify(states[stidx]));
+    // Emitting the json snippet with bciAnswer event
+    interchange.emit('bciAnswer', JSON.stringify(json_snippet));
 	stidx = (stidx+1)%states.length; // <~ cyclic permutation
 }
 
