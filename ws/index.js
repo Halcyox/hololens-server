@@ -8,7 +8,7 @@ const { clear } = require('console'), // Import clear method from the console mo
       unity_port = 3001, // Port for Unity connection
       bci_port = 3000, // Port for BCI connection
       intervalTime = 30000, // Interval time for BCI server
-      debugMode = true, // Boolean for debug mode
+      debugMode = false, // Boolean for debug mode
       interchange = new EventEmitter(); // Create a new EventEmitter instance for inter-component communication
 let      anyBciFound = false; // Boolean for BCI device status
 
@@ -22,7 +22,7 @@ const json_snippet = {
       stream: {
         id: '5DTA-YXGE-WKFP-FG19',
         option: 'no',
-        per_second: [Array],
+        per_second: [Array],//<- this is sus
         total_seconds: 15
       }
     }
