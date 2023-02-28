@@ -90,8 +90,7 @@ function unityServer(app, port) {
             if (data == "START_COMMAND") {
                 interchange.emit('commandBci', data);
 	        	if (debugMode)  {
-		        	//setTimeout(sendRandBciOutput, 15000);
-                    sendDbgBciOutput(); //we will send a debug output
+		        	setTimeout(sendDbgBciOutput, 15000);//we will send a debug output
         		}
                 console.log(`emitted commandBci(${data})`);
             } else if (data == "ARE_YOU_THERE_BCI") {
