@@ -47,8 +47,8 @@ function bciServer(app, port) {
             if (!debugMode) {
                 interchange.emit('bciAnswer', JSON.stringify(tagged_data.data.answer));
             } else {
-                sendDbgBciOutput();
-                // console.warn("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
+                //sendDbgBciOutput();
+                console.warn("NOTICE: debug mode! not forwarding bciAnswer to interchange....");
             }
         });
         bci_conn.on('close', function() {
